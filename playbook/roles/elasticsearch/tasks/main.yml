@@ -1,0 +1,45 @@
+---
+- name: install java-11-openjdk-devel for elasticsearch
+  dnf: 
+    name: java-11-openjdk-devel*
+    state: present
+- name: get elasticsearch from official website
+  shell: wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.16-linux-x86_64.tar.gz --no-check-certificate
+  args: 
+    chdir: /root/
+  when: arch == x86_64
+- name: unzip tar.gz
+  shell: tar -xzvf elasticsearch-7.17.16-linux-x86_64.tar.gz -C /opt
+  args: 
+    chdir: /root/
+  when: arch == x86_64
+- name: get elasticsearch from official website
+  shell: wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.17.16-linux-aarch64.tar.gz --no-check-certificate
+  args: 
+    chdir: /root/
+  when: arch == aarch64
+- name: unzip tar.gz
+  shell: tar -xzvf elasticsearch-7.17.16-linux-aarch64.tar.gz -C /opt
+  args: 
+    chdir: /root/
+  when: arch == aarch64
+- name: add elastic user
+  shell: groupadd elastic && useradd elastic -g elastic
+- name: chown /opt/elasticsearch-7.17.16/
+  shell: chown -R elastic:elastic /opt/elasticsearch-7.17.16/
+- name: change es config
+  template: src=templates/elasticsearch/elasticsearch.yml.j2 dest=/opt/elasticsearch-7.17.16/config/elasticsearch.yml
+- name: change jvms
+  lineinfile: 
+    path: /opt/elasticsearch-7.17.16/config/jvm.options
+    regexp: '^#?-Xms*'
+    line: '-Xms4g'
+    backrefs: yes
+- name: change jvmx
+  lineinfile: 
+    path: /opt/elasticsearch-7.17.16/config/jvm.options
+    regexp: '^#?-Xmx*'
+    line: '-Xmx4g'
+    backrefs: yes
+- name: start  elasticsearch
+  shell: nohup /opt/elasticsearch-7.17.16/bin/elasticsearch -d &
