@@ -18,28 +18,35 @@
   args: 
     chdir: /root/
   when: arch == aarch64
+- name: mkdir elasticsearch
+  shell: mkdir -p /opt/elasticsearch
 - name: unzip tar.gz
-  shell: tar -xzvf elasticsearch-7.17.16-linux-aarch64.tar.gz -C /opt
+  shell: tar -xzvf elasticsearch-7.17.16-linux-aarch64.tar.gz -C /opt/elasticsearch --strip-components 1
   args: 
     chdir: /root/
   when: arch == aarch64
+- name: unzip tar.gz
+  shell: tar -xzvf elasticsearch-7.17.16-linux-x86_64.tar.gz -C /opt/elasticsearch --strip-components 1
+  args: 
+    chdir: /root/
+  when: arch == x86_64
 - name: add elastic user
   shell: groupadd elastic && useradd elastic -g elastic
-- name: chown /opt/elasticsearch-7.17.16/
-  shell: chown -R elastic:elastic /opt/elasticsearch-7.17.16/
+- name: chown /opt/elasticsearch/
+  shell: chown -R elastic:elastic /opt/elasticsearch/
 - name: change es config
-  template: src=templates/elasticsearch/elasticsearch.yml.j2 dest=/opt/elasticsearch-7.17.16/config/elasticsearch.yml
+  template: src=templates/elasticsearch/elasticsearch.yml.j2 dest=/opt/elasticsearch/config/elasticsearch.yml
 - name: change jvms
   lineinfile: 
-    path: /opt/elasticsearch-7.17.16/config/jvm.options
+    path: /opt/elasticsearch/config/jvm.options
     regexp: '^#?-Xms*'
     line: '-Xms4g'
     backrefs: yes
 - name: change jvmx
   lineinfile: 
-    path: /opt/elasticsearch-7.17.16/config/jvm.options
+    path: /opt/elasticsearch/config/jvm.options
     regexp: '^#?-Xmx*'
     line: '-Xmx4g'
     backrefs: yes
 - name: start  elasticsearch
-  shell: nohup /opt/elasticsearch-7.17.16/bin/elasticsearch -d &
+  shell: nohup /opt/elasticsearch/bin/elasticsearch -d &
