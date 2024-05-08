@@ -1,30 +1,25 @@
 ---
+- name: mkdir filebeat
+  shell: mkdir -p /opt/filebeat
 - name: get fliebeat from official website
   shell: wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.17.16-linux-x86_64.tar.gz --no-check-certificate
   args: 
     chdir: /root/
-  when: arch == x86_64
-- name: unzip tar.gz
-  shell: tar -xzvf filebeat-7.17.16-linux-x86_64.tar.gz -C /opt
-  args: 
-    chdir: /root/
-  when: arch == x86_64
-- name: get filebeat from official website
-  shell: wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.17.16-linux-arm64.tar.gz --no-check-certificate
-  args: 
-    chdir: /root/
-  when: arch == aarch64
-- name: mkdir filebeat
-  shell: mkdir -p /opt/filebeat
-- name: unzip tar.gz
-  shell: tar -xzvf filebeat-7.17.16-linux-arm64.tar.gz -C /opt/filebeat --strip-components 1
-  args: 
-    chdir: /root/
-  when: arch == aarch64
+  when: ansible_architecture == "x86_64"
 - name: unzip tar.gz
   shell: tar -xzvf filebeat-7.17.16-linux-x86_64.tar.gz -C /opt/filebeat --strip-components 1
   args: 
     chdir: /root/
-  when: arch == x86_64
+  when: ansible_architecture == x86_64
+- name: get filebeat from official website
+  shell: wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.17.16-linux-arm64.tar.gz --no-check-certificate
+  args: 
+    chdir: /root/
+  when: ansible_architecture == "aarch64"
+- name: unzip tar.gz
+  shell: tar -xzvf filebeat-7.17.16-linux-arm64.tar.gz -C /opt/filebeat --strip-components 1
+  args: 
+    chdir: /root/
+  when: ansible_architecture == "aarch64"
 - name: start filebeat
   shell: nobup /opt/filebeat/filebeat -c /opt/filebeat/filebeat.yml &

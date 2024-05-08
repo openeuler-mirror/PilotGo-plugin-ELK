@@ -34,7 +34,7 @@ path.data: /home/elastic/data
 #
 # Path to log files:
 #
-path.logs: /opt/elasticsearch-7.17.16/logs
+path.logs: /opt/elasticsearch/logs
 #
 # ----------------------------------- Memory -----------------------------------
 #
@@ -53,7 +53,13 @@ bootstrap.memory_lock: true
 # By default Elasticsearch is only accessible on localhost. Set a different
 # address here to expose this node on the network:
 #
+{% if groups | length == 1 %}
+
 network.host: {{ groups['standalone'][0] }}
+{% else %}
+
+network.host: {{ groups['elasticsearch'][0] }}
+{% endif %}
 #
 # By default Elasticsearch listens for HTTP traffic on the first free port it
 # finds starting at 9200. Set a specific HTTP port here:
@@ -95,3 +101,12 @@ discovery.type: single-node
 # Refer to the following documentation for instructions.
 #
 # https://www.elastic.co/guide/en/elasticsearch/reference/7.16/configuring-stack-security.html
+{% if needSSL == "true" %}
+
+xpack.security.enabled: true
+xpack.security.authc.api_key.enabled: true
+xpack.security.http.ssl.enabled: true
+xpack.security.http.ssl.verification_mode: none
+xpack.security.http.ssl.keystore.path: certs/elasticsearch/http.p12
+xpack.security.http.ssl.truststore.path: certs/elasticsearch/http.p12
+{%endif%}
