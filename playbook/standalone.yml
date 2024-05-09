@@ -7,4 +7,54 @@
     - kibana
     - fleet
     - filebeat
+  
+  tasks: 
+  - name: https for es
+    block: 
+    - name: dnf python3-pexpect
+      dnf: 
+        name: python3-pexpect
+        state: present
+    - name: create ca for es
+      expect: 
+        command: /opt/elasticsearch/bin/elasticsearch-certutil ca
+        responses: 
+          (?!)output: "\n"
+          (?!)password: "\n"
+    - name: create certificates for es
+      expect: 
+        command: /opt/elasticsearch/bin/elasticsearch-certutil cert --ca elastic-stack-ca.p12
+        responses: 
+          'Enter password for CA /(elastic-stack-ca.p12/):': "\n"
+          'Please enter the desired output file /[elastic-certificates.p12/]: ': "\n"
+          'Enter password for elastic-certificates.p12:': "\n"
+    - name: create https ca
+      expect:
+        command: /opt/elasticsearch/bin/elasticsearch-certutil http
+        responses: 
+          (?!)CSR: "n"
+          'Use an existing CA*': "y"
+          'CA Path*': "/opt/elasticsearch/elastic-stack-ca.p12"
+          'Password for elastic-stack-ca.p12*': ""
+          'For how long should your certificate be valid*': "10y"
+          'Generate a certificate per node*': "n"
+          'When you are done, press \<ENTER\> once more to move on to the next step':
+            - "\n"
+            - "\n"
+          'Is this correct*': "y"
+          'When you are done, press \<ENTER\> once more to move on to the next step':
+            - "\n"
+            - "\n"
+          'Is this correct*': "y"
+          'Do you wish to change any of these options*': "n"
+          'Provide a password for the*': ""
+    - name: mkdir certs
+      shell: mkdir -p /opt/elasticsearch/config/certs
+    - name: unzip elasticsearch-ssl-http.zip
+      shell: mv /opt/elasticsearch/elasticsearch-ssl-http.zip /opt/elasticsearch/config/certs && unzip elasticsearch-ssl-http.zip
+    - name: stop es
+      shell: kill -9 $(ps -ef | grep "nohup /opt/elasticsearch/bin/elasticsearch -d &" | grep -v grep | awk '{print $2}')
+    - name: start es
+      shell: nohup /opt/elasticsearch/bin/elasticsearch -d &
+    when: needSSL == "true"
 
