@@ -1,0 +1,23 @@
+elk:
+  https_enabled: false
+  public_certificate: ""
+  private_key: ""
+  addr: "localhost:9993"
+PilotGo:
+  http_addr: "localhost:8888"
+log:
+  level: debug
+  driver: file # 可选stdout和file。stdout：输出到终端控制台；file：输出到path下的指定文件。
+  path: /opt/PilotGo/plugin/elk/log/elk.log
+  max_file: 1
+  max_size: 10485760
+elasticsearch:
+  http_addr: "localhost:9200"
+  username: ""
+  password: ""
+logstash:
+  http_addr: "localhost:9600" 
+kibana:
+  http_addr: "localhost:5601"
+  username: ""
+  password: ""

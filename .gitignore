@@ -1,0 +1,19 @@
+vendor/
+
+# configuration files
+elk.yaml
+
+# binary files
+run
+build
+elk
+
+# static files
+handler/assets/
+handler/index.html
+web/node_modules
+web/dist/
+web/src/assets/*.json
+*.jsonc
+
+go.work*
