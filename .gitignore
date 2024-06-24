@@ -6,7 +6,7 @@ elk.yaml
 # binary files
 run
 build
-elk
+elkserver
 
 # static files
 handler/assets/
