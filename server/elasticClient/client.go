@@ -7,12 +7,14 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/pkg/errors"
 
 	"gitee.com/openeuler/PilotGo-plugin-elk/conf"
 	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/global/template"
 	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
 	elastic "github.com/elastic/go-elasticsearch/v7"
 )
@@ -54,11 +56,29 @@ func InitElasticClient() {
 		Client: es_client,
 		Ctx:    pluginclient.Global_Context,
 	}
+
+	Global_elastic.initSearchTemplate()
 }
 
-func (client *ElasticClient_v7) Search(index string, body io.Reader) ([]byte, error) {
+func (client *ElasticClient_v7) initSearchTemplate() {
+	for key, value := range template.DSL_template_map {
+		reqbody := strings.NewReader(value)
+		_, err := client.Client.PutScript(
+			key,
+			reqbody,
+			client.Client.PutScript.WithContext(client.Ctx),
+			client.Client.PutScript.WithPretty(),
+		)
+		if err != nil {
+			err = errors.Errorf("fail to put script: %s, %s **warn**0", key, err.Error()) // err top
+			errormanager.ErrorTransmit(pluginclient.Global_Context, err, false)
+		}
+	}
+}
+
+func (client *ElasticClient_v7) SearchByQueryRequestBody(index string, body io.Reader) ([]byte, error) {
 	resp, err := client.Client.Search(
-		client.Client.Search.WithContext(context.Background()),
+		client.Client.Search.WithContext(client.Ctx),
 		client.Client.Search.WithIndex(index),
 		client.Client.Search.WithBody(body),
 		client.Client.Search.WithTrackTotalHits(true),
