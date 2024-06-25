@@ -12,9 +12,10 @@ type PilotGoConf struct {
 }
 
 type ElasticConf struct {
-	Addr     string `yaml:"http_addr"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
+	Https_enabled bool   `yaml:"https_enabled"`
+	Addr          string `yaml:"addr"`
+	Username      string `yaml:"username"`
+	Password      string `yaml:"password"`
 }
 
 type LogstashConf struct {
@@ -22,7 +23,8 @@ type LogstashConf struct {
 }
 
 type KibanaConf struct {
-	Addr     string `yaml:"http_addr"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
+	Https_enabled bool   `yaml:"https_enabled"`
+	Addr          string `yaml:"addr"`
+	Username      string `yaml:"username"`
+	Password      string `yaml:"password"`
 }

@@ -31,7 +31,7 @@ type ElasticClient_v7 struct {
 
 func InitElasticClient() {
 	addresses := []string{}
-	if conf.Global_Config.Elk.Https_enabled {
+	if conf.Global_Config.Elasticsearch.Https_enabled {
 		addresses = append(addresses, fmt.Sprintf("https://%s", conf.Global_Config.Elasticsearch.Addr))
 	} else {
 		addresses = append(addresses, fmt.Sprintf("http://%s", conf.Global_Config.Elasticsearch.Addr))
