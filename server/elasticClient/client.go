@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"io"
 	"net"
 	"net/http"
 	"time"
@@ -51,6 +52,32 @@ func InitElasticClient() {
 
 	Global_elastic = &ElasticClient_v7{
 		Client: es_client,
-		Ctx:    context.Background(),
+		Ctx:    pluginclient.Global_Context,
+	}
+}
+
+func (client *ElasticClient_v7) Search(index string, body io.Reader) ([]byte, error) {
+	resp, err := Global_elastic.Client.Search(
+		Global_elastic.Client.Search.WithContext(context.Background()),
+		Global_elastic.Client.Search.WithIndex(index),
+		Global_elastic.Client.Search.WithBody(body),
+		Global_elastic.Client.Search.WithTrackTotalHits(true),
+		Global_elastic.Client.Search.WithPretty(),
+	)
+	if err != nil {
+		err = errors.Errorf("%+v **errstack**0", err.Error())
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.IsError() {
+		err = errors.Errorf("%+v **errstack**0", resp.String())
+		return nil, err
+	} else {
+		resp_body_bytes, err := io.ReadAll(resp.Body)
+		if err != nil {
+			err = errors.Errorf("%+v **warn**0", err.Error())
+			return nil, err
+		}
+		return resp_body_bytes, nil
 	}
 }
