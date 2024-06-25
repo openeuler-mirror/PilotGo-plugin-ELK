@@ -57,12 +57,12 @@ func InitElasticClient() {
 }
 
 func (client *ElasticClient_v7) Search(index string, body io.Reader) ([]byte, error) {
-	resp, err := Global_elastic.Client.Search(
-		Global_elastic.Client.Search.WithContext(context.Background()),
-		Global_elastic.Client.Search.WithIndex(index),
-		Global_elastic.Client.Search.WithBody(body),
-		Global_elastic.Client.Search.WithTrackTotalHits(true),
-		Global_elastic.Client.Search.WithPretty(),
+	resp, err := client.Client.Search(
+		client.Client.Search.WithContext(context.Background()),
+		client.Client.Search.WithIndex(index),
+		client.Client.Search.WithBody(body),
+		client.Client.Search.WithTrackTotalHits(true),
+		client.Client.Search.WithPretty(),
 	)
 	if err != nil {
 		err = errors.Errorf("%+v **errstack**0", err.Error())
