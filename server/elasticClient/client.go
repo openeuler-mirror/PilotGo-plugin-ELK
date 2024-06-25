@@ -1,8 +1,10 @@
 package elasticClient
 
 import (
+	"bytes"
 	"context"
 	"crypto/tls"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net"
@@ -17,6 +19,7 @@ import (
 	"gitee.com/openeuler/PilotGo-plugin-elk/global/template"
 	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
 	elastic "github.com/elastic/go-elasticsearch/v7"
+	"github.com/elastic/go-elasticsearch/v7/esapi"
 )
 
 var Global_elastic *ElasticClient_v7
@@ -60,6 +63,7 @@ func InitElasticClient() {
 	Global_elastic.initSearchTemplate()
 }
 
+// 在elasticsearch中添加查询模板
 func (client *ElasticClient_v7) initSearchTemplate() {
 	for key, value := range template.DSL_template_map {
 		reqbody := strings.NewReader(value)
@@ -76,7 +80,8 @@ func (client *ElasticClient_v7) initSearchTemplate() {
 	}
 }
 
-func (client *ElasticClient_v7) SearchByQueryRequestBody(index string, body io.Reader) ([]byte, error) {
+// 通过dsl查询
+func (client *ElasticClient_v7) SearchByDsl(index string, body io.Reader) ([]byte, error) {
 	resp, err := client.Client.Search(
 		client.Client.Search.WithContext(client.Ctx),
 		client.Client.Search.WithIndex(index),
@@ -84,18 +89,40 @@ func (client *ElasticClient_v7) SearchByQueryRequestBody(index string, body io.R
 		client.Client.Search.WithTrackTotalHits(true),
 		client.Client.Search.WithPretty(),
 	)
+	return client.processApiResult(resp, err)
+}
+
+// 通过调用template模板查询
+func (client *ElasticClient_v7) SearchByTemplate(index string, querybody map[string]interface{}) ([]byte, error) {
+	query_body_bytes, err := json.Marshal(querybody)
 	if err != nil {
-		err = errors.Errorf("%+v **errstack**0", err.Error())
+		err = errors.Errorf("%s **errstack**0", err.Error())
 		return nil, err
 	}
-	defer resp.Body.Close()
-	if resp.IsError() {
-		err = errors.Errorf("%+v **errstack**0", resp.String())
-		return nil, err
+	query_body_reader := bytes.NewReader(query_body_bytes)
+	resp, err := client.Client.SearchTemplate(
+		query_body_reader,
+		client.Client.SearchTemplate.WithContext(context.Background()),
+		client.Client.SearchTemplate.WithIndex(index),
+		client.Client.SearchTemplate.WithPretty(),
+	)
+	return client.processApiResult(resp, err)
+}
+
+// 处理elasticsearch client接口的返回值
+func (client *ElasticClient_v7) processApiResult(_resp *esapi.Response, _err error) ([]byte, error) {
+	if _err != nil {
+		_err = errors.Errorf("%+v **errstack**0", _err.Error())
+		return nil, _err
+	}
+	defer _resp.Body.Close()
+	if _resp.IsError() {
+		_err = errors.Errorf("%+v **errstack**0", _resp.String())
+		return nil, _err
 	} else {
-		resp_body_bytes, err := io.ReadAll(resp.Body)
+		resp_body_bytes, err := io.ReadAll(_resp.Body)
 		if err != nil {
-			err = errors.Errorf("%+v **warn**0", err.Error())
+			err = errors.Errorf("%s **errstack**0", err.Error())
 			return nil, err
 		}
 		return resp_body_bytes, nil

@@ -1,13 +1,20 @@
 package cluster
 
 import (
+	"gitee.com/openeuler/PilotGo-plugin-elk/elasticClient"
+	"github.com/pkg/errors"
 	"github.com/tidwall/gjson"
 )
 
-func ProcessLogTimeAixsData(raw_results_bytes []byte) ([]map[string]interface{}, error) {
-	log_type_datas := []map[string]interface{}{}
+func ProcessLogTimeAixsData(index string, querybody map[string]interface{}) ([]map[string]interface{}, error) {
+	search_result_body_bytes, err := elasticClient.Global_elastic.SearchByTemplate(index, querybody)
+	if err != nil {
+		err = errors.Wrap(err, "fail to process log timeaxis data")
+		return nil, err
+	}
 
-	hostname_agg_raw_arr := gjson.GetBytes(raw_results_bytes, "aggregations.1.buckets").Array()
+	log_type_datas := []map[string]interface{}{}
+	hostname_agg_raw_arr := gjson.GetBytes(search_result_body_bytes, "aggregations.1.buckets").Array()
 	for _, log_type_data_raw := range hostname_agg_raw_arr {
 		log_type_data := map[string]interface{}{}
 		log_timestamp_datas := [][]interface{}{}
