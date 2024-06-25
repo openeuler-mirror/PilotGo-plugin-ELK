@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"bytes"
 	"encoding/json"
 	"io"
 
@@ -31,26 +30,21 @@ func Search_LogTimeAxisDataHandle(ctx *gin.Context) {
 		return
 	}
 	req_body := struct {
-		Index string      `json:"index"`
-		DSL   interface{} `json:"dsl"`
+		Index  string                 `json:"index"`
+		Id     string                 `json:"id"`
+		Params map[string]interface{} `json:"params"`
 	}{}
 	err = json.Unmarshal(req_body_bytes, &req_body)
 	if err != nil {
 		newError(ctx, err)
 		return
 	}
-	query_body_bytes, err := json.Marshal(req_body.DSL)
-	if err != nil {
-		newError(ctx, err)
-		return
+	query_body := map[string]interface{}{
+		"id":     req_body.Id,
+		"params": req_body.Params,
 	}
 
-	resp_body_bytes, err := elasticClient.Global_elastic.Search(req_body.Index, bytes.NewReader(query_body_bytes))
-	if err != nil {
-		wrapError(ctx, err)
-		return
-	}
-	data, err := cluster.ProcessLogTimeAixsData(resp_body_bytes)
+	data, err := cluster.ProcessLogTimeAixsData(req_body.Index, query_body)
 	if err != nil {
 		wrapError(ctx, err)
 		return
