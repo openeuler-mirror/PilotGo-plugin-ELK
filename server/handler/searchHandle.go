@@ -30,8 +30,6 @@ func Search_LogTimeAxisDataHandle(ctx *gin.Context) {
 		return
 	}
 	req_body := struct {
-		Index  string                 `json:"index"`
-		Id     string                 `json:"id"`
 		Params map[string]interface{} `json:"params"`
 	}{}
 	err = json.Unmarshal(req_body_bytes, &req_body)
@@ -39,12 +37,16 @@ func Search_LogTimeAxisDataHandle(ctx *gin.Context) {
 		newError(ctx, err)
 		return
 	}
+
+	// TODO: 判断索引和模板id
+	index := "logs-*"
+	template_id := "log_timeaxis"
+
 	query_body := map[string]interface{}{
-		"id":     req_body.Id,
+		"id":     template_id,
 		"params": req_body.Params,
 	}
-
-	data, err := cluster.ProcessLogTimeAixsData(req_body.Index, query_body)
+	data, err := cluster.ProcessLogTimeAixsData(index, query_body)
 	if err != nil {
 		wrapError(ctx, err)
 		return
