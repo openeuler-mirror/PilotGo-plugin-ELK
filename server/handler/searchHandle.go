@@ -6,10 +6,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/elasticClient"
-	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
-	"gitee.com/openeuler/PilotGo-plugin-elk/service/cluster"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/elasticClient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/service/cluster"
 	"gitee.com/openeuler/PilotGo/sdk/response"
 	"github.com/gin-gonic/gin"
 )

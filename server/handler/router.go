@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-contrib/timeout"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/conf"
-	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 )
@@ -48,7 +48,7 @@ func InitRouter(router *gin.Engine) {
 	api := router.Group("/plugin/elk/api")
 	{
 		api.POST("/create_policy", CreatePolicyHandle)
-		api.POST("/log_time_axis_data", Search_LogTimeAxisDataHandle)
+		api.POST("/log_timeaxis_data", Search_LogTimeAxisDataHandle)
 	}
 
 	timeoutapi := router.Group("/plugin/elk/api")

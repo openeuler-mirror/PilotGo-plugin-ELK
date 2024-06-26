@@ -8,9 +8,9 @@ import (
 	"io"
 	"net/http"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/kibanaClient/7_17_16/meta"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/kibanaClient/7_17_16/meta"
 	"github.com/elastic/elastic-agent-libs/kibana"
-	"gitee.com/openeuler/PilotGo-plugin-elk/global"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/global"
 )
 
 func (client *KibanaClient_v7) GetPackageInfo(ctx context.Context, pkgname string) (*meta.PackageInfo_p, error) {
