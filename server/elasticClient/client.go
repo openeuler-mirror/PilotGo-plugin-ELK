@@ -42,7 +42,7 @@ func InitElasticClient() {
 		Password:  conf.Global_Config.Elasticsearch.Password,
 		Transport: &http.Transport{
 			MaxIdleConnsPerHost:   10,
-			ResponseHeaderTimeout: time.Second,
+			ResponseHeaderTimeout: 5 * time.Second,
 			DialContext:           (&net.Dialer{Timeout: time.Second}).DialContext,
 			TLSClientConfig:       &tls.Config{InsecureSkipVerify: true},
 		},
