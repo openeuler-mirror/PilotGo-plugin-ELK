@@ -1,7 +1,7 @@
 package kibanaClient
 
 import (
-	"gitee.com/openeuler/PilotGo-plugin-elk/kibanaClient/8_13_0/meta"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/kibanaClient/8_13_0/meta"
 	"github.com/tidwall/gjson"
 )
 

@@ -1,15 +1,15 @@
 package main
 
 import (
-	"gitee.com/openeuler/PilotGo-plugin-elk/conf"
-	"gitee.com/openeuler/PilotGo-plugin-elk/db"
-	"gitee.com/openeuler/PilotGo-plugin-elk/elasticClient"
-	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/handler"
-	kibanaclient "gitee.com/openeuler/PilotGo-plugin-elk/kibanaClient/7_17_16"
-	"gitee.com/openeuler/PilotGo-plugin-elk/logger"
-	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
-	"gitee.com/openeuler/PilotGo-plugin-elk/signal"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/db"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/elasticClient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/handler"
+	kibanaclient "gitee.com/openeuler/PilotGo-plugin-elk/server/kibanaClient/7_17_16"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/logger"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/signal"
 )
 
 func main() {
@@ -40,7 +40,6 @@ func main() {
 
 	/*
 		init database
-		neo4j mysql redis prometheus
 	*/
 	db.InitDB()
 

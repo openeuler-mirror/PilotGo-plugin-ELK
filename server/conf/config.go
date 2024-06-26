@@ -6,7 +6,7 @@ import (
 	"os"
 	"path"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/global"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/global"
 	"gitee.com/openeuler/PilotGo/sdk/logger"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"

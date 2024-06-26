@@ -14,10 +14,10 @@ import (
 
 	"github.com/pkg/errors"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/conf"
-	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/global/template"
-	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/global/template"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
 	elastic "github.com/elastic/go-elasticsearch/v7"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
 )

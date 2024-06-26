@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
 	"gitee.com/openeuler/PilotGo/sdk/response"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"

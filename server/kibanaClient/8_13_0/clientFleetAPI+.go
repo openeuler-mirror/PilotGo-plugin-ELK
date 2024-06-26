@@ -8,8 +8,8 @@ import (
 	"io"
 	"net/http"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/kibanaClient/8_13_0/meta"
-	"gitee.com/openeuler/PilotGo-plugin-elk/global"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/kibanaClient/8_13_0/meta"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/global"
 	"github.com/elastic/elastic-agent-libs/kibana"
 )
 

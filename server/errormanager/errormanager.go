@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/conf"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
 	"gitee.com/openeuler/PilotGo/sdk/logger"
 	"github.com/pkg/errors"
 )

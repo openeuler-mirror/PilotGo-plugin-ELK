@@ -1,9 +1,9 @@
 package logger
 
 import (
-	"gitee.com/openeuler/PilotGo-plugin-elk/conf"
-	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
 	"gitee.com/openeuler/PilotGo/sdk/logger"
 	"github.com/pkg/errors"
 )

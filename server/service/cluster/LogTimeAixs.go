@@ -1,7 +1,7 @@
 package cluster
 
 import (
-	"gitee.com/openeuler/PilotGo-plugin-elk/elasticClient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/elasticClient"
 	"github.com/pkg/errors"
 	"github.com/tidwall/gjson"
 )

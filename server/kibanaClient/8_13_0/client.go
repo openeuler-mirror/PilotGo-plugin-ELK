@@ -6,11 +6,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	"gitee.com/openeuler/PilotGo-plugin-elk/conf"
-	"gitee.com/openeuler/PilotGo-plugin-elk/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/global"
-	"gitee.com/openeuler/PilotGo-plugin-elk/kibanaClient/8_13_0/meta"
-	"gitee.com/openeuler/PilotGo-plugin-elk/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/global"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/kibanaClient/8_13_0/meta"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
 	"github.com/elastic/elastic-agent-libs/kibana"
 )
 
