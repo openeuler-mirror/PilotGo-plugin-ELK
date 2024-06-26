@@ -14,14 +14,14 @@ import (
 var Global_ErrorManager *ErrorManager
 
 type ErrorManager struct {
-	ErrCh chan *Topoerror
+	ErrCh chan *ElkPluginError
 
 	Out io.Writer
 }
 
 func InitErrorManager() {
 	Global_ErrorManager = &ErrorManager{
-		ErrCh: make(chan *Topoerror, 20),
+		ErrCh: make(chan *ElkPluginError, 20),
 	}
 
 	switch conf.Global_Config.Logopts.Driver {
@@ -35,29 +35,29 @@ func InitErrorManager() {
 		Global_ErrorManager.Out = logfile
 	}
 
-	go func(ch <-chan *Topoerror) {
-		for topoerr := range ch {
-			if topoerr.Err != nil {
-				errarr := strings.Split(errors.Cause(topoerr.Err).Error(), "**")
+	go func(ch <-chan *ElkPluginError) {
+		for elkerr := range ch {
+			if elkerr.Err != nil {
+				errarr := strings.Split(errors.Cause(elkerr.Err).Error(), "**")
 				if len(errarr) < 2 {
-					logger.Error("topoerror type required in root error (err: %+v)", topoerr.Err)
+					logger.Error("topoerror type required in root error (err: %+v)", elkerr.Err)
 					os.Exit(1)
 				}
 
 				switch errarr[1] {
 				case "debug": // 只打印最底层error的message，不展开错误链的调用栈
-					logger.Debug("%+v\n", strings.Split(errors.Cause(topoerr.Err).Error(), "**")[0])
+					logger.Debug("%+v\n", strings.Split(errors.Cause(elkerr.Err).Error(), "**")[0])
 				case "warn": // 只打印最底层error的message，不展开错误链的调用栈
-					logger.Warn("%+v\n", strings.Split(errors.Cause(topoerr.Err).Error(), "**")[0])
+					logger.Warn("%+v\n", strings.Split(errors.Cause(elkerr.Err).Error(), "**")[0])
 				case "errstack": // 打印错误链的调用栈
-					fmt.Fprintf(Global_ErrorManager.Out, "%+v\n", topoerr.Err)
+					fmt.Fprintf(Global_ErrorManager.Out, "%+v\n", elkerr.Err)
 					// errors.EORE(err)
 				case "errstackfatal": // 打印错误链的调用栈，并结束程序
-					fmt.Fprintf(Global_ErrorManager.Out, "%+v\n", topoerr.Err)
+					fmt.Fprintf(Global_ErrorManager.Out, "%+v\n", elkerr.Err)
 					// errors.EORE(err)
-					topoerr.Cancel()
+					elkerr.Cancel()
 				default:
-					fmt.Printf("only support \"debug warn errstack errstackfatal\" error type: %+v\n", topoerr.Err)
+					fmt.Printf("only support \"debug warn errstack errstackfatal\" error type: %+v\n", elkerr.Err)
 					os.Exit(1)
 				}
 			}
