@@ -11,24 +11,26 @@ const (
 		  "source": {
 			"aggs": {
 				"1": {
-					"terms": {
+				  "date_histogram": {
+					"field": "@timestamp",
+					"fixed_interval": "{{fixed_interval}}",
+					"time_zone": "Asia/Shanghai",
+					"min_doc_count": 0
+				  },
+				  "aggs": {
+					"1-1": {
+					  "terms": {
 						"field": "{{aggs_field}}",
 						"order": {
-							"_count": "desc"
-						}
-					},
-					"aggs": {
-						"1-1": {
-							"date_histogram": {
-								"field": "@timestamp",
-								"fixed_interval": "1s",
-								"time_zone": "Asia/Shanghai",
-								"min_doc_count": 0
-							}
-						}	
+						  "_count": "desc"
+						},
+						"size": 5,
+						"min_doc_count": 0
+					  }
 					}
+				  }
 				}
-			},
+			  },
 			"size": "{{size}}",
 			"script_fields": {},
 			"stored_fields": [
@@ -71,7 +73,8 @@ const (
 			"query_range_gte": "2024-06-24T10:55:36.185Z",
 			"query_range_lte": "2024-06-24T11:00:36.185Z",
 			"aggs_field": "host.hostname",
-			"size": 0
+			"size": 0,
+			"fixed_interval": "10s"
 		  }
 		  }
 	  	}
