@@ -49,7 +49,7 @@ func Search_LogTimeAxisDataHandle(ctx *gin.Context) {
 		params[k] = v
 	}
 	
-	// TODO: 判断索引和模板id
+	// TODO: 判断索引
 	index := "logs-*"
 
 	query_body := map[string]interface{}{
