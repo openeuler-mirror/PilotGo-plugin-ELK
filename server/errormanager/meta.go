@@ -7,7 +7,7 @@ import (
 	"gitee.com/openeuler/PilotGo/sdk/logger"
 )
 
-type Topoerror struct {
+type ElkPluginError struct {
 	Err    error
 	Cancel context.CancelFunc
 }
@@ -27,7 +27,7 @@ func ErrorTransmit(ctx context.Context, err error, exit_after_print bool) {
 
 	if exit_after_print {
 		cctx, cancelF := context.WithCancel(ctx)
-		Global_ErrorManager.ErrCh <- &Topoerror{
+		Global_ErrorManager.ErrCh <- &ElkPluginError{
 			Err:    err,
 			Cancel: cancelF,
 		}
@@ -36,7 +36,7 @@ func ErrorTransmit(ctx context.Context, err error, exit_after_print bool) {
 		os.Exit(1)
 	}
 
-	Global_ErrorManager.ErrCh <- &Topoerror{
+	Global_ErrorManager.ErrCh <- &ElkPluginError{
 		Err: err,
 	}
 }
