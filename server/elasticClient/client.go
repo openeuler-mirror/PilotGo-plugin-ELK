@@ -9,14 +9,12 @@ import (
 	"io"
 	"net"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/pkg/errors"
 
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
-	"gitee.com/openeuler/PilotGo-plugin-elk/server/global/template"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
 	elastic "github.com/elastic/go-elasticsearch/v7"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
@@ -25,8 +23,8 @@ import (
 var Global_elastic *ElasticClient_v7
 
 type ElasticClient_v7 struct {
-	Client          *elastic.Client
-	Ctx             context.Context
+	Client *elastic.Client
+	Ctx    context.Context
 }
 
 func InitElasticClient() {
@@ -58,25 +56,6 @@ func InitElasticClient() {
 	Global_elastic = &ElasticClient_v7{
 		Client: es_client,
 		Ctx:    pluginclient.Global_Context,
-	}
-
-	Global_elastic.initSearchTemplate()
-}
-
-// 在elasticsearch中添加查询模板
-func (client *ElasticClient_v7) initSearchTemplate() {
-	for key, value := range template.DSL_template_map {
-		reqbody := strings.NewReader(value[0])
-		_, err := client.Client.PutScript(
-			key,
-			reqbody,
-			client.Client.PutScript.WithContext(client.Ctx),
-			client.Client.PutScript.WithPretty(),
-		)
-		if err != nil {
-			err = errors.Errorf("fail to put script: %s, %s **warn**0", key, err.Error()) // err top
-			errormanager.ErrorTransmit(pluginclient.Global_Context, err, false)
-		}
 	}
 }
 

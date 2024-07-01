@@ -8,7 +8,7 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-func ProcessLogTimeAixsData(index string, querybody map[string]interface{}) (interface{}, error) {
+func ProcessLogTimeAxisData(index string, querybody map[string]interface{}) (interface{}, error) {
 	search_result_body_bytes, err := elasticClient.Global_elastic.SearchByTemplate(index, querybody)
 	if err != nil {
 		err = errors.Wrap(err, "fail to process log timeaxis data")

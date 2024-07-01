@@ -48,7 +48,7 @@ func InitRouter(router *gin.Engine) {
 	api := router.Group("/plugin/elk/api")
 	{
 		api.POST("/create_policy", CreatePolicyHandle)
-		
+
 		api.POST("/log_clusterhost_timeaxis_data", SearchByTemplateHandle)
 		api.POST("/log_hostprocess_timeaxis_data", SearchByTemplateHandle)
 		api.POST("/log_stream_data", SearchByTemplateHandle)
