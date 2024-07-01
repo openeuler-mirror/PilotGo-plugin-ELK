@@ -1,7 +1,7 @@
 package template
 
 var (
-	DSL_template_map map[string]string
+	DSL_template_map map[string][]string
 )
 
 const (
@@ -161,11 +161,110 @@ const (
 	  	}
 	
 	}`
+
+	DSL_log_stream_template = `{
+		"script": {
+			"lang": "mustache",
+			"source": {
+				"from": "{{from}}",
+				"size": "{{size}}",
+				"sort": [
+				  {
+					"@timestamp": {
+					  "order": "desc",
+					  "unmapped_type": "boolean"
+					}
+				  }
+				],
+				"fields": [
+				  {
+					"field": "*",
+					"include_unmapped": "true"
+				  },
+				  {
+					"field": "@timestamp",
+					"format": "strict_date_optional_time"
+				  },
+				  {
+					"field": "event.created",
+					"format": "strict_date_optional_time"
+				  },
+				  {
+					"field": "event.ingested",
+					"format": "strict_date_optional_time"
+				  }
+				],
+				"script_fields": {},
+				"stored_fields": [
+				  "*"
+				],
+				"runtime_mappings": {},
+				"query": {
+				  "bool": {
+					"must": [],
+					"filter": [
+					  {
+						"bool": {
+						  "must": [
+							{
+							  "match": {
+								"data_stream.dataset": "{{query_data_stream_dataset}}"
+							  }
+							},
+							{
+							  "term": {
+								"host.hostname": "{{hostname}}"
+							  }
+							},
+							{
+							  "term": {
+								"process.name": "{{processname}}"
+							  }
+							}
+						  ]
+						}
+					  },
+					  {
+						"range": {
+						  "@timestamp": {
+							"format": "strict_date_optional_time",
+							"gte": "{{query_range_gte}}",
+							"lte": "{{query_range_lte}}"
+						  }
+						}
+					  }
+					],
+					"should": [],
+					"must_not": []
+				  }
+				}
+			  },
+			"params": {
+				"query_data_stream_dataset": "system.syslog",
+				"query_range_gte": "2024-06-24T10:55:36.185Z",
+				"query_range_lte": "2024-06-24T11:00:36.185Z",
+				"hostname": "wjq-pc",
+				"processname": "systemd",
+				"from": 0,
+				"size": 10
+			  }
+		}
+	}`
 )
 
 func init() {
-	DSL_template_map = map[string]string{
-		"log_clusterhost_timeaxis": DSL_log_clusterhost_timeaxis_template,
-		"log_hostprocess_timeaxis": DSL_log_hostprocess_timeaxis_template,
+	DSL_template_map = map[string][]string{
+		"log_clusterhost_timeaxis": {
+			DSL_log_clusterhost_timeaxis_template,
+			"ProcessLogTimeAixsData",
+		},
+		"log_hostprocess_timeaxis": {
+			DSL_log_hostprocess_timeaxis_template,
+			"ProcessLogTimeAixsData",
+		},
+		"log_stream": {
+			DSL_log_stream_template,
+			"ProcessLogStreamData",
+		},
 	}
 }
