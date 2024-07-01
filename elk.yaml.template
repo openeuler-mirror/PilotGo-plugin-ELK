@@ -3,8 +3,6 @@ elk:
   public_certificate: ""
   private_key: ""
   addr: "localhost:9993"
-PilotGo:
-  http_addr: "localhost:8888"
 log:
   level: debug
   driver: file # 可选stdout和file。stdout：输出到终端控制台；file：输出到path下的指定文件。

@@ -7,10 +7,6 @@ type ElkConf struct {
 	Addr               string `yaml:"addr"`
 }
 
-type PilotGoConf struct {
-	Addr string `yaml:"http_addr"`
-}
-
 type ElasticConf struct {
 	Https_enabled bool   `yaml:"https_enabled"`
 	Addr          string `yaml:"addr"`

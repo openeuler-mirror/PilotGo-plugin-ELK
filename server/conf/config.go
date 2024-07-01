@@ -20,7 +20,6 @@ var config_dir string
 
 type ServerConfig struct {
 	Elk           *ElkConf
-	PilotGo       *PilotGoConf
 	Logopts       *logger.LogOpts `yaml:"log"`
 	Elasticsearch *ElasticConf
 	Logstash      *LogstashConf
