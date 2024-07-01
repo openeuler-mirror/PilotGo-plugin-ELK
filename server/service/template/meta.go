@@ -1,8 +1,18 @@
 package template
 
-var (
-	DSL_template_map map[string][]string
-)
+/*
+key: 查询模板id
+
+value: 查询模板文本及处理函数
+*/
+var QueryTemplateMap map[string]QueryTemplateMeta
+
+type SearchTemplateFunc func(string, map[string]interface{}) (interface{}, error)
+
+type QueryTemplateMeta struct {
+	Text string             `json:"text"` // 查询模板文本
+	Func SearchTemplateFunc `json:"func"` // 查询模板请求处理函数
+}
 
 const (
 	DSL_log_clusterhost_timeaxis_template = `{
@@ -251,20 +261,3 @@ const (
 		}
 	}`
 )
-
-func init() {
-	DSL_template_map = map[string][]string{
-		"log_clusterhost_timeaxis": {
-			DSL_log_clusterhost_timeaxis_template,
-			"ProcessLogTimeAixsData",
-		},
-		"log_hostprocess_timeaxis": {
-			DSL_log_hostprocess_timeaxis_template,
-			"ProcessLogTimeAixsData",
-		},
-		"log_stream": {
-			DSL_log_stream_template,
-			"ProcessLogStreamData",
-		},
-	}
-}

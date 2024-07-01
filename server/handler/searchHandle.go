@@ -11,7 +11,7 @@ import (
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/global"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
-	"gitee.com/openeuler/PilotGo-plugin-elk/server/service"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/service/template"
 	"gitee.com/openeuler/PilotGo/sdk/response"
 	"github.com/gin-gonic/gin"
 )
@@ -56,7 +56,7 @@ func SearchByTemplateHandle(ctx *gin.Context) {
 		"id":     req_body.Id,
 		"params": params,
 	}
-	data, err := service.TemplateHandleFuncMap[query_body["id"].(string)](index, query_body)
+	data, err := template.QueryTemplateMap[query_body["id"].(string)].Func(index, query_body)
 	if err != nil {
 		wrapError(ctx, err)
 		return

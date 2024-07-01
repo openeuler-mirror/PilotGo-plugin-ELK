@@ -9,6 +9,7 @@ import (
 	kibanaclient "gitee.com/openeuler/PilotGo-plugin-elk/server/kibanaClient/7_17_16"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/logger"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/service/template"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/signal"
 )
 
@@ -45,8 +46,10 @@ func main() {
 
 	/*
 		init elasticsearch client
+		init search template
 	*/
 	elasticClient.InitElasticClient()
+	template.InitSearchTemplate()
 
 	/*
 		init kibana client
