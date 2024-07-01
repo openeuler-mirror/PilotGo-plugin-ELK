@@ -25,8 +25,8 @@ import (
 var Global_elastic *ElasticClient_v7
 
 type ElasticClient_v7 struct {
-	Client *elastic.Client
-	Ctx    context.Context
+	Client          *elastic.Client
+	Ctx             context.Context
 }
 
 func InitElasticClient() {
@@ -66,7 +66,7 @@ func InitElasticClient() {
 // 在elasticsearch中添加查询模板
 func (client *ElasticClient_v7) initSearchTemplate() {
 	for key, value := range template.DSL_template_map {
-		reqbody := strings.NewReader(value)
+		reqbody := strings.NewReader(value[0])
 		_, err := client.Client.PutScript(
 			key,
 			reqbody,

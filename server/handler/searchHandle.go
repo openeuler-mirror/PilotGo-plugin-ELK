@@ -11,13 +11,13 @@ import (
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/global"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
-	"gitee.com/openeuler/PilotGo-plugin-elk/server/service/cluster"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/service"
 	"gitee.com/openeuler/PilotGo/sdk/response"
 	"github.com/gin-gonic/gin"
 )
 
 // 查询日志时间轴相关数据
-func Search_LogTimeAxisDataHandle(ctx *gin.Context) {
+func SearchByTemplateHandle(ctx *gin.Context) {
 	if elasticClient.Global_elastic.Client == nil {
 		err := errors.New("global_elastic is null **warn**0") // err top
 		errormanager.ErrorTransmit(pluginclient.Global_Context, err, false)
@@ -48,7 +48,7 @@ func Search_LogTimeAxisDataHandle(ctx *gin.Context) {
 		}
 		params[k] = v
 	}
-	
+
 	// TODO: 判断索引
 	index := "logs-*"
 
@@ -56,7 +56,7 @@ func Search_LogTimeAxisDataHandle(ctx *gin.Context) {
 		"id":     req_body.Id,
 		"params": params,
 	}
-	data, err := cluster.ProcessLogTimeAixsData(index, query_body)
+	data, err := service.TemplateHandleFuncMap[query_body["id"].(string)](index, query_body)
 	if err != nil {
 		wrapError(ctx, err)
 		return
