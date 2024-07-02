@@ -27,3 +27,18 @@ func GetTime_Timestamp2DateTime(timestamp int64) string {
 	date_time := t.UTC().Format(time.RFC3339)
 	return date_time
 }
+
+func GetTime_UTCDateTime2ShanghaiDateTime(utc_date_str string) (string, error) {
+	location, err := time.LoadLocation("Asia/Shanghai")
+	if err != nil {
+		err = errors.Errorf("fail to convert utc datetime to asia.shanghai datetime: %s, %s **errstack**0", utc_date_str, err.Error())
+		return "", err
+	}
+	utctime, err := time.Parse(time.RFC3339, utc_date_str)
+	if err != nil {
+		err = errors.Errorf("fail to convert utc datetime to asia.shanghai datetime: %s, %s **errstack**0", utc_date_str, err.Error())
+		return "", err
+	}
+	shanghaitime := utctime.In(location)
+	return shanghaitime.Format("2006-01-02 15:04:05"), nil
+}

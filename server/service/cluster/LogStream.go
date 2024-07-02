@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/elasticClient"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/global"
 	"github.com/pkg/errors"
 	"github.com/tidwall/gjson"
 )
@@ -23,7 +24,10 @@ func ProcessLogStreamData(index string, querybody map[string]interface{}) (inter
 		json.Unmarshal([]byte(hit_raw.Get("fields").Raw), &hit_map)
 
 		log := map[string]interface{}{}
-		log["date"] = hit_map["@timestamp"][0].(string)
+		if log["date"], err = global.GetTime_UTCDateTime2ShanghaiDateTime(hit_map["@timestamp"][0].(string)); err != nil {
+			err = errors.Wrap(err, "fail to process log timeaxis data")
+			return nil, err
+		}
 		if hit_map["log.level"] != nil {
 			log["level"] = hit_map["log.level"][0].(string)
 		} else {
