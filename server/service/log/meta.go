@@ -1,4 +1,4 @@
-package cluster
+package log
 
 import "github.com/tidwall/gjson"
 
