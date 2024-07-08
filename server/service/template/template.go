@@ -6,7 +6,7 @@ import (
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/elasticClient"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/pluginclient"
-	"gitee.com/openeuler/PilotGo-plugin-elk/server/service/cluster"
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/service/log"
 	"github.com/pkg/errors"
 )
 
@@ -14,15 +14,15 @@ func init() {
 	QueryTemplateMap = map[string]QueryTemplateMeta{
 		"log_clusterhost_timeaxis": {
 			Text: DSL_log_clusterhost_timeaxis_template,
-			Func: cluster.ProcessLogTimeAxisData,
+			Func: log.ProcessLogTimeAxisData,
 		},
 		"log_hostprocess_timeaxis": {
 			Text: DSL_log_hostprocess_timeaxis_template,
-			Func: cluster.ProcessLogTimeAxisData,
+			Func: log.ProcessLogTimeAxisData,
 		},
 		"log_stream": {
 			Text: DSL_log_stream_template,
-			Func: cluster.ProcessLogStreamData,
+			Func: log.ProcessLogStreamData,
 		},
 	}
 }

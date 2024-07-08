@@ -30,7 +30,7 @@ const (
 				  "aggs": {
 					"1-1": {
 					  "terms": {
-						"field": "{{aggs_field}}",
+						"field": "{{aggsfield}}",
 						"order": {
 						  "_count": "desc"
 						},
@@ -56,7 +56,7 @@ const (
 						"should": [
 						  {
 							"match": {
-							  "data_stream.dataset": "{{query_data_stream_dataset}}"
+							  "data_stream.dataset": "{{queryfield_datastream_dataset}}"
 							}
 						  }
 						],
@@ -67,8 +67,8 @@ const (
 					  "range": {
 						"@timestamp": {
 						  "format": "strict_date_optional_time",
-						  "gte": "{{query_range_gte}}",
-						  "lte": "{{query_range_lte}}"
+						  "gte": "{{queryfield_range_gte}}",
+						  "lte": "{{queryfield_range_lte}}"
 						}
 					  }
 					}
@@ -79,10 +79,10 @@ const (
 			}
 		  },
 		  "params": {
-			"query_data_stream_dataset": "system.syslog",
-			"query_range_gte": "2024-06-24T10:55:36.185Z",
-			"query_range_lte": "2024-06-24T11:00:36.185Z",
-			"aggs_field": "host.hostname",
+			"queryfield_datastream_dataset": "system.syslog",
+			"queryfield_range_gte": "2024-06-24T10:55:36.185Z",
+			"queryfield_range_lte": "2024-06-24T11:00:36.185Z",
+			"aggsfield": "host.hostname",
 			"size": 0,
 			"fixed_interval": "10s"
 		  }
@@ -106,7 +106,7 @@ const (
 				  "aggs": {
 					"1-1": {
 					  "terms": {
-						"field": "{{aggs_1-1_field}}",
+						"field": "{{aggsfield}}",
 						"order": {
 						  "_count": "desc"
 						},
@@ -132,12 +132,12 @@ const (
 						"must": [
 						  {
 							"match": {
-							  "data_stream.dataset": "{{query_data_stream_dataset}}"	  
+							  "data_stream.dataset": "{{queryfield_data_stream_dataset}}"	  
 							}
 						  },
 						  {
 							"term": {
-								"host.hostname": "{{hostname}}"
+								"host.hostname": "{{queryfield_hostname}}"
 							}
 						  }
 						]
@@ -147,8 +147,8 @@ const (
 					  "range": {
 						"@timestamp": {
 						  "format": "strict_date_optional_time",
-						  "gte": "{{query_range_gte}}",
-						  "lte": "{{query_range_lte}}"
+						  "gte": "{{queryfield_range_gte}}",
+						  "lte": "{{queryfield_range_lte}}"
 						}
 					  }
 					}
@@ -159,11 +159,11 @@ const (
 			}
 		  },
 		  "params": {
-			"query_data_stream_dataset": "system.syslog",
-			"query_range_gte": "2024-06-24T10:55:36.185Z",
-			"query_range_lte": "2024-06-24T11:00:36.185Z",
-			"aggs_1-1_field": "process.name",
-			"hostname": "wjq-pc",
+			"queryfield_data_stream_dataset": "system.syslog",
+			"queryfield_range_gte": "2024-06-24T10:55:36.185Z",
+			"queryfield_range_lte": "2024-06-24T11:00:36.185Z",
+			"aggsfield": "process.name",
+			"queryfield_hostname": "wjq-pc",
 			"size": 0,
 			"fixed_interval": "10s"
 		  }
@@ -218,17 +218,17 @@ const (
 						  "must": [
 							{
 							  "match": {
-								"data_stream.dataset": "{{query_data_stream_dataset}}"
+								"data_stream.dataset": "{{queryfield_datastream_dataset}}"
 							  }
 							},
 							{
 							  "term": {
-								"host.hostname": "{{hostname}}"
+								"host.hostname": "{{queryfield_hostname}}"
 							  }
 							},
 							{
 							  "term": {
-								"process.name": "{{processname}}"
+								"process.name": "{{queryfield_processname}}"
 							  }
 							}
 						  ]
@@ -238,8 +238,8 @@ const (
 						"range": {
 						  "@timestamp": {
 							"format": "strict_date_optional_time",
-							"gte": "{{query_range_gte}}",
-							"lte": "{{query_range_lte}}"
+							"gte": "{{queryfield_range_gte}}",
+							"lte": "{{queryfield_range_lte}}"
 						  }
 						}
 					  }
@@ -250,11 +250,11 @@ const (
 				}
 			  },
 			"params": {
-				"query_data_stream_dataset": "system.syslog",
-				"query_range_gte": "2024-06-24T10:55:36.185Z",
-				"query_range_lte": "2024-06-24T11:00:36.185Z",
-				"hostname": "wjq-pc",
-				"processname": "systemd",
+				"queryfield_datastream_dataset": "system.syslog",
+				"queryfield_range_gte": "2024-06-24T10:55:36.185Z",
+				"queryfield_range_lte": "2024-06-24T11:00:36.185Z",
+				"queryfield_hostname": "wjq-pc",
+				"queryfield_processname": "systemd",
 				"from": 0,
 				"size": 10
 			  }
