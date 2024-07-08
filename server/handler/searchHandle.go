@@ -42,7 +42,7 @@ func SearchByTemplateHandle(ctx *gin.Context) {
 	}
 	params := map[string]interface{}{}
 	for k, v := range req_body.Params {
-		if strings.Contains(k, "query_range") {
+		if strings.Contains(k, "queryfield_range") {
 			params[k] = global.GetTime_Timestamp2DateTime(int64(v.(float64)))
 			continue
 		}
