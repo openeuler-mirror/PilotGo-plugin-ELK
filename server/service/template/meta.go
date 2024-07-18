@@ -132,7 +132,7 @@ const (
 						"must": [
 						  {
 							"match": {
-							  "data_stream.dataset": "{{queryfield_data_stream_dataset}}"	  
+							  "data_stream.dataset": "{{queryfield_datastream_dataset}}"	  
 							}
 						  },
 						  {
@@ -159,7 +159,7 @@ const (
 			}
 		  },
 		  "params": {
-			"queryfield_data_stream_dataset": "system.syslog",
+			"queryfield_datastream_dataset": "system.syslog",
 			"queryfield_range_gte": "2024-06-24T10:55:36.185Z",
 			"queryfield_range_lte": "2024-06-24T11:00:36.185Z",
 			"aggsfield": "process.name",

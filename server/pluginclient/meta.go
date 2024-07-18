@@ -10,6 +10,6 @@ var PluginInfo = &client.PluginInfo{
 	Description: "connect PilotGo and elk",
 	Author:      "wangjunqi",
 	Email:       "wangjunqi@kylinos.cn",
-	Url:         "http://localhost:9993",
+	Url:         "", // 客户端访问插件服务端的地址
 	PluginType:  "micro-app",
 }
