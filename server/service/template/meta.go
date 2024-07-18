@@ -82,7 +82,7 @@ const (
 			"queryfield_datastream_dataset": "system.syslog",
 			"queryfield_range_gte": "2024-06-24T10:55:36.185Z",
 			"queryfield_range_lte": "2024-06-24T11:00:36.185Z",
-			"aggsfield": "host.hostname",
+			"aggsfield": "agent.hostname",
 			"size": 0,
 			"fixed_interval": "10s"
 		  }
@@ -137,7 +137,7 @@ const (
 						  },
 						  {
 							"term": {
-								"host.hostname": "{{queryfield_hostname}}"
+								"agent.hostname": "{{queryfield_hostname}}"
 							}
 						  }
 						]
@@ -223,7 +223,7 @@ const (
 							},
 							{
 							  "term": {
-								"host.hostname": "{{queryfield_hostname}}"
+								"agent.hostname": "{{queryfield_hostname}}"
 							  }
 							},
 							{
