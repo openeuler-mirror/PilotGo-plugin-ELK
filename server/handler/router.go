@@ -31,13 +31,13 @@ func InitWebServer() {
 		if conf.Global_Config.Elk.Https_enabled {
 			err := engine.RunTLS(conf.Global_Config.Elk.Addr, conf.Global_Config.Elk.Public_certificate, conf.Global_Config.Elk.Private_key)
 			if err != nil {
-				err = errors.Errorf("%s **errstackfatal**2", err.Error()) // err top
+				err = errors.Errorf("%s: %s, %s **errstackfatal**2", err.Error(), conf.Global_Config.Elk.Public_certificate, conf.Global_Config.Elk.Private_key)
 				errormanager.ErrorTransmit(pluginclient.Global_Context, err, true)
 			}
 		} else {
 			err := engine.Run(conf.Global_Config.Elk.Addr)
 			if err != nil {
-				err = errors.Errorf("%s **errstackfatal**2", err.Error()) // err top
+				err = errors.Errorf("%s **errstackfatal**2", err.Error())
 				errormanager.ErrorTransmit(pluginclient.Global_Context, err, true)
 			}
 		}
