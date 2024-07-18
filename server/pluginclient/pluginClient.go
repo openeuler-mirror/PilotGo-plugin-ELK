@@ -2,8 +2,12 @@ package pluginclient
 
 import (
 	"context"
+	"errors"
+	"fmt"
 
+	"gitee.com/openeuler/PilotGo-plugin-elk/server/conf"
 	"gitee.com/openeuler/PilotGo/sdk/common"
+	"gitee.com/openeuler/PilotGo/sdk/logger"
 	"gitee.com/openeuler/PilotGo/sdk/plugin/client"
 )
 
@@ -12,9 +16,24 @@ var Global_Client *client.Client
 var Global_Context context.Context
 
 func InitPluginClient() {
+	if conf.Global_Config != nil && conf.Global_Config.Elk.Https_enabled {
+		PluginInfo.Url = fmt.Sprintf("https://%s", conf.Global_Config.Elk.Addr_target)
+	} else if conf.Global_Config != nil && !conf.Global_Config.Elk.Https_enabled {
+		PluginInfo.Url = fmt.Sprintf("http://%s", conf.Global_Config.Elk.Addr_target)
+	} else {
+		err := errors.New("Global_Config is nil")
+		logger.Fatal("%+v", err)
+	}
+
 	Global_Client = client.DefaultClient(PluginInfo)
 
-	// 注册插件扩展点
+	getExtentions()
+
+	Global_Context = context.Background()
+}
+
+// 注册插件扩展点
+func getExtentions() {
 	var ex []common.Extention
 	pe1 := &common.PageExtention{
 		Type:       common.ExtentionPage,
@@ -36,6 +55,4 @@ func InitPluginClient() {
 	}
 	ex = append(ex, pe1, pe2, pe3)
 	Global_Client.RegisterExtention(ex)
-
-	Global_Context = context.Background()
 }
