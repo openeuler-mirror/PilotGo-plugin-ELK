@@ -47,3 +47,25 @@
       backrefs: yes
   - name: start  elasticsearch
     shell: nohup /opt/elasticsearch-7.17.16/bin/elasticsearch -d &
+  - name: get kibana from official website 
+    shell: wget https://artifacts.elastic.co/downloads/kibana/kibana-7.17.16-linux-x86_64.tar.gz --no-check-certificate
+    args: 
+      chdir: /root/
+    when: arch == x86_64
+  - name: unzip tar.gz
+    shell: tar -xzvf kibana.17.16-linux-x86_64.tar.gz -C /opt
+    args: 
+      chdir: /root/
+    when: arch == x86_64
+  - name: get elasticsearch from official website
+    shell: wget https://artifacts.elastic.co/downloads/kibana/kibana-7.17.16-linux-aarch64.tar.gz --no-check-certificate
+    args: 
+      chdir: /root/
+    when: arch == aarch64
+  - name: unzip tar.gz
+    shell: tar -xzvf kibana-7.17.16-linux-aarch64.tar.gz -C /opt
+    args: 
+      chdir: /root/
+    when: arch == aarch64
+  - name: start kibana
+    shell: nohup /opt/kibana.17.16/bin/kibana &
