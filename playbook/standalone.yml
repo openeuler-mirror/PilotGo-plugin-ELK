@@ -29,10 +29,10 @@
     args: 
       chdir: /root/
     when: arch == aarch64
-  - name: add elk user
-    shell: groupadd elk && useradd elk -g elk
+  - name: add elastic user
+    shell: groupadd elastic && useradd elastic -g elastic
   - name: chown /opt/elasticsearch-7.17.16/
-    shell: chown -R elk:elk /opt/elasticsearch-7.17.16/
+    shell: chown -R elastic:elastic /opt/elasticsearch-7.17.16/
   - name: change jvms
     lineinfile: 
       path: /opt/elasticsearch-7.17.16/config/jvm.options
@@ -53,7 +53,7 @@
       chdir: /root/
     when: arch == x86_64
   - name: unzip tar.gz
-    shell: tar -xzvf kibana.17.16-linux-x86_64.tar.gz -C /opt
+    shell: tar -xzvf kibana-7.17.16-linux-x86_64.tar.gz -C /opt
     args: 
       chdir: /root/
     when: arch == x86_64
@@ -68,4 +68,4 @@
       chdir: /root/
     when: arch == aarch64
   - name: start kibana
-    shell: nohup /opt/kibana.17.16/bin/kibana &
+    shell: nohup /opt/kibana-7.17.16/bin/kibana --allow-root & 
