@@ -1,9 +1,11 @@
 module gitee.com/openeuler/PilotGo-plugin-elk
 
-go 1.20
+go 1.21
+
+toolchain go1.21.4
 
 require (
-	gitee.com/openeuler/PilotGo/sdk v0.0.0-20240612062829-11adb82d6774
+	gitee.com/openeuler/PilotGo/sdk v0.0.0-20240711084602-e34bc1158484
 	github.com/elastic/elastic-agent-libs v0.9.8
 	github.com/elastic/go-elasticsearch/v7 v7.17.10
 	github.com/gin-contrib/timeout v1.0.1
