@@ -33,6 +33,8 @@
     shell: groupadd elastic && useradd elastic -g elastic
   - name: chown /opt/elasticsearch-7.17.16/
     shell: chown -R elastic:elastic /opt/elasticsearch-7.17.16/
+  - name: change es config
+    template: src=templates/elasticsearch/elasticsearch.yml.j2 dest=/opt/elasticsearch-7.17.16/config/elasticsearch.yml
   - name: change jvms
     lineinfile: 
       path: /opt/elasticsearch-7.17.16/config/jvm.options
