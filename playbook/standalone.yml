@@ -93,3 +93,25 @@
     shell: kill -9 $(ps -ef | grep "nohup /opt/kibana-7.17.16/bin/kibana --allow-root &" | grep -v grep | awk '{print $2}')
   - name: start kibana
     shell: nohup /opt/kibana-7.17.16/bin/kibana --allow-root &
+  - name: get fliebeat from official website
+    shell: wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.17.16-linux-x86_64.tar.gz --no-check-certificate
+    args: 
+      chdir: /root/
+    when: arch == x86_64
+  - name: unzip tar.gz
+    shell: tar -xzvf filebeat-7.17.16-linux-x86_64.tar.gz -C /opt
+    args: 
+      chdir: /root/
+    when: arch == x86_64
+  - name: get filebeat from official website
+    shell: wget https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.17.16-linux-arm64.tar.gz --no-check-certificate
+    args: 
+      chdir: /root/
+    when: arch == aarch64
+  - name: unzip tar.gz
+    shell: tar -xzvf filebeat-7.17.16-linux-arm64.tar.gz -C /opt
+    args: 
+      chdir: /root/
+    when: arch == aarch64
+  - name: start filebeat
+    shell: nobup /opt/filebeat-7.17.16/filebeat -c /opt/filebeat-7.17.16/filebeat.yml &
