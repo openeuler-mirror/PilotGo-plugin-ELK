@@ -1,2 +1,4 @@
 ---
 arch: x86_64
+es_name: kibana_system
+es_name_password: Kylinmanager13579!
