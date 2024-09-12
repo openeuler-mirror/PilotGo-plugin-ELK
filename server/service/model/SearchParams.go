@@ -6,5 +6,6 @@ type SearchParams struct {
 	StartTime string  `json:"startTime"`
 	EndTime   string  `json:"endTime"`
 	Keyword   string  `json:"keyword"`
+	Search    string  `json:"search"`
 	// 其他搜索字段
 }

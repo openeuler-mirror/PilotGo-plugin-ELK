@@ -53,6 +53,7 @@ func InitRouter(router *gin.Engine) {
 		api.POST("/log_hostprocess_timeaxis_data", SearchByTemplateHandle)
 		api.POST("/log_stream_data", SearchByTemplateHandle)
 		api.POST("/log_search", QueryHandler)
+		api.POST("/log_advance_search", QueryHandler)
 	}
 
 	timeoutapi := router.Group("/plugin/elk/api")
