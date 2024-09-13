@@ -1,0 +1,28 @@
+---
+- name: es install
+  hosts: elasticsearch
+  remote_user: root
+  
+  roles: 
+    - elasticsearch
+
+- name: kibana install
+  hosts: kibana
+  remote_user: root
+  
+  roles: 
+    - kibana
+
+- name: fleet install
+  hosts: fleet
+  remote_user: root
+  
+  roles: 
+    - fleet
+
+- name: filebeat install
+  hosts: filebeat
+  remote_user: root
+  
+  roles: 
+    - filebeat
