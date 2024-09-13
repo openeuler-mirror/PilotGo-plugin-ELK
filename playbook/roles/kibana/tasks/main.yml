@@ -14,12 +14,19 @@
   args: 
     chdir: /root/
   when: arch == aarch64
+- name: mkdir kibana
+  shell: mkdir -p /opt/kibana
 - name: unzip tar.gz
-  shell: tar -xzvf kibana-7.17.16-linux-aarch64.tar.gz -C /opt
+  shell: tar -xzvf kibana-7.17.16-linux-aarch64.tar.gz -C /opt/kibana --strip-components 1
   args: 
     chdir: /root/
   when: arch == aarch64
+- name: unzip tar.gz
+  shell: tar -xzvf kibana-7.17.16-linux-x86_64.tar.gz -C /opt/kibana --strip-components 1
+  args: 
+    chdir: /root/
+  when: arch == x86_64
 - name: change es config
-  template: src=templates/kibana/kibana.yml.j2 dest=/opt/kibana-7.17.16/config/kibana.yml
+  template: src=templates/kibana/kibana.yml.j2 dest=/opt/kibana/config/kibana.yml
 - name: start kibana
-  shell: nohup /opt/kibana-7.17.16/bin/kibana --allow-root & 
+  shell: nohup /opt/kibana/bin/kibana --allow-root & 

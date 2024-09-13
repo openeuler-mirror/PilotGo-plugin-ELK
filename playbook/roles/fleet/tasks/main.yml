@@ -1,0 +1,22 @@
+- name: install docker
+  dnf: 
+    name: docker
+    state: present
+- name: pull fleet for kibana
+  shell: docker pull docker.elastic.co/package-registry/distribution:7.17.23
+- name: Save the fleet Docker image locally
+  shell: docker save -o package-registry-7.17.23.tar docker.elastic.co/package-registry/distribution:7.17.23
+- name: Transfer the image to the air-gapped environment and load it
+  shell: docker load -i package-registry-7.17.23.tar
+- name: Run the Elastic Package Registry
+  shell: docker run -it -p 8080:8080 docker.elastic.co/package-registry/distribution:7.17.23
+- name: change kibana config for fleet
+  lineinfile:  
+    path: /opt/kibana/config/kibana.yml 
+    regexp: '^#?xpack\.fleet\.registryUrl:\s*'  
+    line: 'xpack.fleet.registryUrl: http://127.0.0.1:8080'  
+    backup: yes
+- name: stop kibana
+  shell: kill -9 $(ps -ef | grep "nohup /opt/kibana/bin/kibana --allow-root &" | grep -v grep | awk '{print $2}')
+- name: start kibana
+  shell: nohup /opt/kibana/bin/kibana --allow-root &
