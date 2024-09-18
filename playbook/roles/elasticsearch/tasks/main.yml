@@ -47,3 +47,5 @@
     backrefs: yes
 - name: start  elasticsearch
   shell: nohup /opt/elasticsearch/bin/elasticsearch -d &
+  become: yes
+  become_user: elastic

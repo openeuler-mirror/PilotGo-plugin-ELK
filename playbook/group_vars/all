@@ -1,6 +1,5 @@
 ---
-es_name: kibana_system
-es_name_password: Kylinmanager13579!
+password_for_all_es_users: Kylinmanager13579!
 needSSL: true
 kibana_ssl_crt_file: /opt/kibana/config/certs/kibana-server.crt
 kibana_ssl_key_file: /opt/kibana/config/certs/kibana-server.key

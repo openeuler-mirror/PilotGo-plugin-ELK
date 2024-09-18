@@ -38,13 +38,9 @@
           'Password for elastic-stack-ca.p12*': ""
           'For how long should your certificate be valid*': "10y"
           'Generate a certificate per node*': "n"
-          'When you are done, press \<ENTER\> once more to move on to the next step':
-            - "\n"
-            - "\n"
+          'When you are done, press \<ENTER\> once more to move on to the next step': "\n"
           'Is this correct*': "y"
-          'When you are done, press \<ENTER\> once more to move on to the next step':
-            - "\n"
-            - "\n"
+          'When you are done, press \<ENTER\> once more to move on to the next step': "\n"
           'Is this correct*': "y"
           'Do you wish to change any of these options*': "n"
           'Provide a password for the*': ""
@@ -52,9 +48,31 @@
       shell: mkdir -p /opt/elasticsearch/config/certs
     - name: unzip elasticsearch-ssl-http.zip
       shell: mv /opt/elasticsearch/elasticsearch-ssl-http.zip /opt/elasticsearch/config/certs && unzip elasticsearch-ssl-http.zip
-    - name: stop es
+    - name: stop es service
+      service: 
+        name: elasticsearch
+        state: stopped
+    - name: stop es ps
       shell: kill -9 $(ps -ef | grep "nohup /opt/elasticsearch/bin/elasticsearch -d &" | grep -v grep | awk '{print $2}')
     - name: start es
       shell: nohup /opt/elasticsearch/bin/elasticsearch -d &
+      become: yes
+      become_user: elastic
+    - name: set users password for es
+      expect: 
+        command: /opt/elasticsearch/bin/elasticsearch-setup-passwords interactive
+        responses: 
+          'Enter password for *': "{{ password_for_all_es_users }}"
+          'Reenter password for *': "{{ password_for_all_es_users }}"
+          'Enter password for *': "{{ password_for_all_es_users }}"
+          'Reenter password for *': "{{ password_for_all_es_users }}"
+          'Enter password for *': "{{ password_for_all_es_users }}"
+          'Reenter password for *': "{{ password_for_all_es_users }}"
+          'Enter password for *': "{{ password_for_all_es_users }}"
+          'Reenter password for *': "{{ password_for_all_es_users }}"
+          'Enter password for *': "{{ password_for_all_es_users }}"
+          'Reenter password for *': "{{ password_for_all_es_users }}"
+          'Enter password for *': "{{ password_for_all_es_users }}"
+          'Reenter password for *': "{{ password_for_all_es_users }}"
     when: needSSL == "true"
 
