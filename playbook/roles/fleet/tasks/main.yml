@@ -16,7 +16,13 @@
     regexp: '^#?xpack\.fleet\.registryUrl:\s*'  
     line: 'xpack.fleet.registryUrl: http://127.0.0.1:8080'  
     backup: yes
+- name: service stop kibana
+  service: 
+    name: kibana
+    state: stopped
 - name: stop kibana
   shell: kill -9 $(ps -ef | grep "nohup /opt/kibana/bin/kibana --allow-root &" | grep -v grep | awk '{print $2}')
 - name: start kibana
-  shell: nohup /opt/kibana/bin/kibana --allow-root &
+  shell: nohup /opt/kibana/bin/kibana &
+  become: yes
+  become_user: elastic

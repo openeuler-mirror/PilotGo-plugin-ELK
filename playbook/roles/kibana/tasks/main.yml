@@ -26,4 +26,6 @@
 - name: change es config
   template: src=templates/kibana/kibana.yml.j2 dest=/opt/kibana/config/kibana.yml
 - name: start kibana
-  shell: nohup /opt/kibana/bin/kibana --allow-root & 
+  shell: nohup /opt/kibana/bin/kibana & 
+  become: yes
+  become_user: elastic

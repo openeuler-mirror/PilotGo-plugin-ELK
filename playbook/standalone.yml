@@ -44,10 +44,19 @@
           'Is this correct*': "y"
           'Do you wish to change any of these options*': "n"
           'Provide a password for the*': ""
+    - name: create kibana https ca
+      expect: 
+        command: /opt/elasticsearch/bin/elasticsearch-certutil cert --pem --name kibana-server
+        responses: 
+          'Please enter the desired output file *': "\n"
     - name: mkdir certs
       shell: mkdir -p /opt/elasticsearch/config/certs
     - name: unzip elasticsearch-ssl-http.zip
-      shell: mv /opt/elasticsearch/elasticsearch-ssl-http.zip /opt/elasticsearch/config/certs && unzip elasticsearch-ssl-http.zip
+      shell: mv /opt/elasticsearch/elasticsearch-ssl-http.zip /opt/elasticsearch/certificate-bundle.zip /opt/elasticsearch/config/certs
+    - name: unzip ssl zip
+      shell: unzip certificate-bundle.zip && unzip elasticsearch-ssl-http.zip
+      args:
+        chdir: /opt/elasticsearch/config/certs
     - name: stop es service
       service: 
         name: elasticsearch
@@ -62,6 +71,7 @@
       expect: 
         command: /opt/elasticsearch/bin/elasticsearch-setup-passwords interactive
         responses: 
+          'Please confirm that you would like to continue *': "y"
           'Enter password for *': "{{ password_for_all_es_users }}"
           'Reenter password for *': "{{ password_for_all_es_users }}"
           'Enter password for *': "{{ password_for_all_es_users }}"
@@ -74,5 +84,20 @@
           'Reenter password for *': "{{ password_for_all_es_users }}"
           'Enter password for *': "{{ password_for_all_es_users }}"
           'Reenter password for *': "{{ password_for_all_es_users }}"
+    when: needSSL == "true"
+  - name: kibana https config
+    block: 
+    - name: cp ca from es
+      shell: cp -ra /opt/elasticsearch/config/certs /opt/kibana/config
+    - name: service stop kibana
+      service: 
+        name: kibana
+        state: stopped
+    - name: stop kibana
+      shell: kill -9 $(ps -ef | grep "nohup /opt/kibana/bin/kibana --allow-root &" | grep -v grep | awk '{print $2}')
+    - name: start kibana
+      shell: nohup /opt/kibana/bin/kibana &
+      become: yes
+      become_user: elastic
     when: needSSL == "true"
 
