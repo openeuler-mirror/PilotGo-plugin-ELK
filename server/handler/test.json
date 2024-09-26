@@ -1,0 +1,69 @@
+map[string
+]interface {}{
+    "bool":map[string
+    ]interface {}{
+        "must": []interface {}{map[string
+            ]interface {}{
+                "bool":map[string
+                ]interface {}{
+                    "minimum_should_match": 1,
+                    "should": []interface {}{map[string
+                        ]interface {}{
+                            "term":map[string
+                            ]interface {}{
+                                "name": "John"
+                            }
+                        }, map[string
+                        ]interface {}{
+                            "term":map[string
+                            ]interface {}{
+                                "name": "Tom"
+                            }
+                        }, map[string
+                        ]interface {}{
+                            "term":map[string
+                            ]interface {}{
+                                "name": "Bob"
+                            }
+                        }
+                    }
+                }
+            }, map[string
+            ]interface {}{
+                "term":map[string
+                ]interface {}{
+                    "age": "25"
+                }
+            }
+        }
+    }
+}
+
+
+map[string
+]interface {}{
+    "term":map[string
+    ]interface {}{
+        "name": "Bob"
+    }
+}
+}
+}
+}, map[string
+]interface {}{
+"bool":map[string
+]interface {}{
+"minimum_should_match": 1,
+"should": []interface {}{map[string
+]interface {}{
+    "term":map[string
+    ]interface {}{
+        "age": 25
+    }
+}
+}
+}
+}
+}
+}
+}
