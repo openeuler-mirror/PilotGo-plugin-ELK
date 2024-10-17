@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/elasticClient"
 	"gitee.com/openeuler/PilotGo-plugin-elk/server/errormanager"
@@ -142,4 +143,119 @@ func buildElasticQuery1(conditions map[string]interface{}) (string, error) {
 	}
 
 	return string(jsonQuery), nil
+}
+
+// Condition:条件树的接口
+type Condition interface {
+	Evaluate(context map[string]string) bool
+	String() string
+}
+
+// ConditionNode:条件节点
+type ConditionNode struct {
+	Key   string
+	Value string
+}
+
+func (c ConditionNode) Evaluate(context map[string]string) bool {
+	return context[c.Key] == c.Value
+}
+
+func (c ConditionNode) String() string {
+	return fmt.Sprintf("%s=%s", c.Key, c.Value)
+}
+
+// AndNode:与逻辑
+type AndNode struct {
+	Children []Condition
+}
+
+func (a AndNode) Evaluate(context map[string]string) bool {
+	for _, child := range a.Children {
+		if !child.Evaluate(context) {
+			return false
+		}
+	}
+	return true
+}
+
+func (a AndNode) String() string {
+	parts := make([]string, len(a.Children))
+	for i, child := range a.Children {
+		parts[i] = child.String()
+	}
+	return fmt.Sprintf("(%s)", strings.Join(parts, ","))
+}
+
+// OrNode:或逻辑
+type OrNode struct {
+	Children []Condition
+}
+
+func (o OrNode) Evaluate(context map[string]string) bool {
+	for _, child := range o.Children {
+		if child.Evaluate(context) {
+			return true
+		}
+	}
+	return false
+}
+
+func (o OrNode) String() string {
+	parts := make([]string, len(o.Children))
+	for i, child := range o.Children {
+		parts[i] = child.String()
+	}
+	return fmt.Sprintf("(%s)", strings.Join(parts, "|"))
+}
+
+// 解析单个条件
+func parseCondition(expr string) (Condition, error) {
+	parts := strings.SplitN(expr, "=", 2)
+	if len(parts) != 2 {
+		return nil, errors.New("invalid condition format")
+	}
+	return ConditionNode{Key: parts[0], Value: parts[1]}, nil
+}
+
+// 解析整个表达式并返回构建的条件树
+func parseExpression1(expr string) (Condition, error) {
+
+	// 解析为单个条件
+	cond, err := parseCondition(expr)
+	if err == nil {
+		return cond, nil
+	}
+
+	// 解析为 And 表达式
+	if strings.HasPrefix(expr, "(") && strings.HasSuffix(expr, ")") && strings.Contains(expr, ",") {
+		innerExpr := expr[1 : len(expr)-1] // 去掉外层的括号
+		parts := strings.Split(innerExpr, ",")
+		children := make([]Condition, len(parts))
+		for i, part := range parts {
+			child, err := parseExpression1(strings.TrimSpace(part)) // 递归解析每个部分
+			if err != nil {
+				return nil, err
+			}
+			children[i] = child
+		}
+		return AndNode{Children: children}, nil
+	}
+
+	// 解析为 Or 表达式
+	if strings.Contains(expr, "|") {
+		parts := strings.Split(expr, "|")
+		children := make([]Condition, len(parts))
+		for i, part := range parts {
+			child, err := parseExpression1(strings.TrimSpace(part)) // 递归解析每个部分
+			if err != nil {
+				return nil, err
+			}
+			children[i] = child
+		}
+		return OrNode{Children: children}, nil
+	}
+
+	// 无匹配项，返回错误
+	return nil, errors.New("invalid expression format")
 }

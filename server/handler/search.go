@@ -82,5 +82,5 @@ func QueryHandler(ctx *gin.Context) {
 	}
 	bodyBytes, _ := io.ReadAll(res.Body)
 	fmt.Printf("Response body: %s\n", bodyBytes)
-	response.Success(ctx, res, "")
+	response.Success(ctx, bodyBytes, "")
 }
