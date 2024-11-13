@@ -67,6 +67,13 @@ server.ssl.key: {{ kibana_ssl_key_file }}
 #elasticsearch.ssl.certificate: /path/to/your/client.crt
 #elasticsearch.ssl.key: /path/to/your/client.key
 
+xpack.fleet.agents.enabled: true
+xpack.encryptedSavedObjects.encryptionKey: 7c3f32b06754df3652415819495205c1
+xpack.reporting.encryptionKey: fe0907696290a6ee18ecd717b255b422
+xpack.security.encryptionKey: 59f67be53851cdfb3216980ce2ea63f2
+server.xsrf.disableProtection: true
+xpack.fleet.registryUrl: http://{{ groups['fleet'][0] }}:8080
+
 # Optional setting that enables you to specify a path to the PEM file for the certificate
 # authority for your Elasticsearch instance.
 {% if needSSL == "true" %}

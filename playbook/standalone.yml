@@ -94,7 +94,7 @@
         name: kibana
         state: stopped
     - name: stop kibana
-      shell: kill -9 $(ps -ef | grep "nohup /opt/kibana/bin/kibana --allow-root &" | grep -v grep | awk '{print $2}')
+      shell: kill -9 $(ps -ef | grep "nohup /opt/kibana/bin/kibana &" | grep -v grep | awk '{print $2}')
     - name: start kibana
       shell: nohup /opt/kibana/bin/kibana &
       become: yes
