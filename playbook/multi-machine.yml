@@ -90,6 +90,22 @@
   
   roles: 
     - kibana
+  tasks: 
+  - name: kibana https config
+    block: 
+    - name: cp ca from es
+      shell: cp -ra /opt/elasticsearch/config/certs /opt/kibana/config
+    - name: service stop kibana
+      service: 
+        name: kibana
+        state: stopped
+    - name: stop kibana
+      shell: kill -9 $(ps -ef | grep "nohup /opt/kibana/bin/kibana &" | grep -v grep | awk '{print $2}')
+    - name: start kibana
+      shell: nohup /opt/kibana/bin/kibana &
+      become: yes
+      become_user: elastic
+    when: needSSL == "true"
 
 - name: fleet install
   hosts: fleet
