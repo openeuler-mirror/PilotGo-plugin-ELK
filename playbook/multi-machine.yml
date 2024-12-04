@@ -120,3 +120,10 @@
   
   roles: 
     - filebeat
+
+- name: pilotgo install
+  hosts: pilotgo
+  remote_user: root
+  
+  roles: 
+    - pilotgo
