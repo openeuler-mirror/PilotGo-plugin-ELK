@@ -4,6 +4,7 @@
   
   roles: 
     - pilotgo
+    - pilotgo-agent
     - elasticsearch
     - kibana
     - fleet
