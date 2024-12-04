@@ -4,3 +4,6 @@ needSSL: true
 kibana_ssl_crt_file: /opt/kibana/config/certs/kibana-server/kibana-server.crt
 kibana_ssl_key_file: /opt/kibana/config/certs/kibana-server/kibana-server.key
 kibana_elastic_ca_file: /opt/kibana/config/certs/kibana/elasticsearch-ca.pem
+redis_password: "PilotGo13579!"
+mysql_password: "PilotGo13579!"
+pilotgo_config: /opt/PilotGo/server/config_server.yaml
