@@ -9,6 +9,7 @@
     - kibana
     - fleet
     - filebeat
+    - elk
   
   tasks: 
   - name: https for es

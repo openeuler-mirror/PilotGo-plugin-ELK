@@ -1,0 +1,78 @@
+#------------------------------- elk server -------------------------------
+elk:
+#
+  https_enabled: false
+#  cert_file: "/root/keys/PilotGo/PilotGo.crt"
+#  key_file: "/root/keys/PilotGo/PilotGo.key"
+#
+# 插件服务端服务器监听地址
+  server_listen_addr: "0.0.0.0:9993"
+#
+# 远程客户端与插件服务端建立连接时插件的地址
+  {% if groups | length == 1 %}
+
+  server_target_addr: "{{ groups['standalone'][0] }}:9993"
+  {% else %}
+
+  server_target_addr: "{{ groups['elk'][0] }}:9993"
+  {% endif %}
+#
+#------------------------------- log -------------------------------
+log:
+#
+  level: debug
+#
+# 可选stdout和file。stdout：输出到终端控制台；file：输出到path下的指定文件。
+  driver: file
+#
+  path: /opt/PilotGo/plugin/elk/log/elk.log
+  max_file: 1
+  max_size: 10485760
+#
+#------------------------------- elasticsearch -------------------------------
+elasticsearch:
+#
+  https_enabled: true
+  {% if groups | length == 1 %}
+
+  addr: "{{ groups['standalone'][0] }}:9200"
+  {% else %}
+
+  addr: "{{ groups['elk'][0] }}:9200"
+  {% endif %}
+  username: "elastic"
+  password: "{{ password_for_all_es_users }}"
+#
+#------------------------------- kibana -------------------------------
+kibana:
+#
+  https_enabled: true
+  {% if groups | length == 1 %}
+
+  addr: "{{ groups['standalone'][0] }}:5601"
+  {% else %}
+
+  addr: "{{ groups['elk'][0] }}:5601"
+  {% endif %}
+  username: "elastic"
+  password: "{{ password_for_all_es_users }}"
+#
+#------------------------------- logstash(暂不使用) -------------------------------
+logstash:
+#
+  {% if groups | length == 1 %}
+
+  http_addr: "{{ groups['standalone'][0] }}:9600"
+  {% else %}
+
+  http_addr: "{{ groups['logstash'][0] }}:9600"
+  {% endif %}
+
+
+
+
+
+
+
+
+

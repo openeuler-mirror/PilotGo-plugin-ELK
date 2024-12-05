@@ -1,0 +1,13 @@
+---
+- name: install pilotgo-elk-server
+  dnf: 
+    name: PilotGo-plugin-elk-server
+    state: present
+  register: pilotgo_elk_info
+  ignore_errors: yes
+- name: exit when pilotgo-elk-server fail install
+  fail:  
+    msg: 'dnf install PilotGo-plugin-elk failed'
+  when: pilotgo_elk_info.rc != 0
+- name: change PilotGo elk server config
+  template: src=templates/elk/elk.yaml.j2 dest={{ pilotgo_elk_config }}
