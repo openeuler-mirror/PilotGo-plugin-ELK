@@ -127,3 +127,10 @@
   
   roles: 
     - pilotgo
+
+- name: pilotgo agent install
+  hosts: pilotgo-agent
+  remote_user: root
+  
+  roles: 
+    - pilotgo-agent
