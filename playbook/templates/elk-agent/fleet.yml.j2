@@ -1,0 +1,61 @@
+agent:
+  id: b8537686-ea41-421b-ac17-b27fe96bdd27
+  monitoring.http:
+    enabled: false
+    host: ""
+    port: 6791
+fleet:
+  enabled: true
+  access_api_key: VVVuMU5KQUJxbWRPN29tc1UzRmg6cHYwc0NlV0ZUWGlKUWthUFhEcHd6Zw==
+  protocol: http
+  {% if groups | length == 1 %}
+
+  host: {{ groups['standalone'][0] }}:8220
+  {% else %}
+
+  host: {{ groups['fleet'][0] }}:8220
+  {% endif %}
+  
+  ssl:
+    verification_mode: none
+    renegotiation: never
+  timeout: 10m0s
+  proxy_disable: true
+  reporting:
+    threshold: 10000
+    check_frequency_sec: 30
+  agent:
+    id: ""
+  server:
+    output:
+      elasticsearch:
+        protocol: https
+        hosts:
+        {% if groups | length == 1 %}
+
+        - {{ groups['standalone'][0] }}:9200
+        {% else %}
+
+        - {{ groups['elasticsearch'][0] }}:9200
+        {% endif %}
+
+        service_token: AAEAAWVsYXN0aWMvZmxlZXQtc2VydmVyL3Rva2VuLTE3MTg4Njk4MzU3Njk6U2pfaDRvblVSMEdMd2NWWm1ZMjlOZw
+        ssl:
+          verification_mode: none
+          certificate_authorities:
+          - /opt/elasticsearch/config/certs/kibana/elasticsearch-ca.pem
+          renegotiation: never
+        proxy_disable: false
+        proxy_headers: {}
+    
+
+    {% if groups | length == 1 %}
+
+    host: {{ groups['standalone'][0] }}
+    {% else %}
+
+    host: {{ groups['fleet'][0] }}
+    {% endif %}
+
+    port: 8220
+    internal_port: 8221

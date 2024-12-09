@@ -6,6 +6,8 @@ password_for_all_es_users: PilotGo13579!
 pilotgo_config: /opt/PilotGo/server/config_server.yaml
 pilotgo_agent_config: /opt/PilotGo/agent/config_agent.yaml
 pilotgo_elk_config: /opt/PilotGo/plugin/elk/elk.yaml
+pilotgo_elk_agent_config: /opt/Elastic/Agent/elastic-agent.yml
+pilotgo_elk_agent_fleet_config: /opt/Elastic/Agent/fleet.yml
 kibana_ssl_crt_file: /opt/kibana/config/certs/kibana-server/kibana-server.crt
 kibana_ssl_key_file: /opt/kibana/config/certs/kibana-server/kibana-server.key
 kibana_elastic_ca_file: /opt/kibana/config/certs/kibana/elasticsearch-ca.pem
