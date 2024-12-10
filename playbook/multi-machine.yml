@@ -141,3 +141,10 @@
   
   roles: 
     - elk
+
+- name: pilotgo elk agent install
+  hosts: elk-agent
+  remote_user: root
+  
+  roles: 
+    - elk-agent

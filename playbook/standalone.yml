@@ -10,6 +10,7 @@
     - fleet
     - filebeat
     - elk
+    - elk-agent
   
   tasks: 
   - name: https for es
